@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <title>Department List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 0px;
+        margin: 0px;
+      }
+      table {
+        width: 80%;
+        border-collapse: collapse;
+        margin: 20px auto;
+        margin-left: 200px;
+      }
+      .dataTables_wrapper {
+        width: 60%;
+        margin: 0 auto;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #ccc;
+      }
+      th,
+      td {
+        padding: 5px;
+        text-align: left;
+      }
+      th {
+        background-color: white;
+        color: #7b1c1c;
+      }
+      button {
+        background-color: #7b1c1c;
+        color: white;
+        border: none;
+        padding: 15px 20px;
+        cursor: pointer;
+        border-radius: 25px;
+      }
+      /* button:hover {
+        background-color: #c45959;
+      } */
+      /* Modal styling */
+      #departmentModal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        padding: 50px;
+        overflow-y: auto;
+      }
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        max-width: 600px;
+        margin: auto;
+      }
+      .form-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .modal-content label {
+        margin-right: 10px;
+        font-weight: bold;
+        flex-basis: 30%;
+      }
+      .modal-content input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        flex-basis: 65%;
+        width: 100%;
+      }
+      button {
+        margin-top: 10px;
+      }
+      @media (max-width: 768px) {
+        #departmentTable th,
+        #departmentTable td {
+          display: block;
+          width: 100%;
+        }
+        #departmentTable {
+          display: block;
+          overflow-x: auto;
+        }
+      }
+      #eyebtn {
+        position: absolute;
+        right: 0px;
+        top: 41%;
+        left: 550px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        color: rgb(24, 26, 25);
+      }
+      .sidebar {
+        background-color: #7b1c1c;
+        position: fixed;
+        width: 200px;
+        height: 100vh;
+        left: 0px;
+        display: block;
+      }
+      .sidebar a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      .sidebar a:hover {
+        background-color: #d7a7a7;
+      }
+      #sidebtn {
+        top: 0px;
+        background-color: #7b1c1c;
+        color: #f4f4f4;
+      }
+      .header {
+        background-color: #7b1c1c;
+      }
+      /* Style for the edit button */
+      .edit-button {
+        background: none;
+        border: none;
+        padding: 0;
+      }
+
+      /* Style for the delete button */
+      .delete-button {
+        background: none;
+        border: none;
+        padding: 0;
+      }
+
+      /* Optionally, you can style the icon color */
+      .edit-button i {
+        color: rgb(133, 129, 129); /* yellow color for the edit icon */
+        font-size: large;
+      }
+
+      .delete-button i {
+        color: red; /* red color for the delete icon */
+        font-size: large;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header" id="header">
+      <button id="sidebtn"></button>
+    </div>
+    <div class="sidebar" id="sidebarid">
+      <a href="javascript:void(0);" onclick="history.back();"><i class="fas fa-user-friends"></i> View Users</a>
+      <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+      <a href="#"><i class="fa fa-sitemap"></i> Department</a>
+      <a href="welcome.html"><i class="fa fa-user"></i> Profile</a>
+      <a href="home.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div style="text-align: center; margin: 20px">
+      <button onclick="showAddModal()">Add Department</button>
+      <!-- <button onclick="showEditPrompt()">Edit Department</button>
+      <button onclick="showDeletePrompt()">Delete Department</button> -->
+    </div>
+
+    <table id="departmentTable">
+      <thead>
+        <tr>
+          <!-- <th>Department ID</th> -->
+          <th>Department Name</th>
+          <th>Role</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Department data will be populated here -->
+      </tbody>
+    </table>
+
+    <!-- Add/Edit Modal -->
+    <div id="departmentModal">
+      <div class="modal-content">
+        <h3 id="modalTitle">Add Department</h3>
+        <div class="form-row">
+          <label for="depId">Department ID:</label>
+          <input type="text" id="depId" />
+        </div>
+        <div class="form-row">
+          <label for="depName">Department Name:</label>
+          <input type="text" id="depName" />
+        </div>
+        <div class="form-row">
+          <label for="role">Role:</label>
+          <input type="text" id="role" />
+        </div>
+        <div class="form-row">
+          <label for="description">Description:</label>
+          <input type="text" id="description" />
+        </div>
+        <button onclick="saveDepartment()">Save</button>
+        <button onclick="closeModall()">Cancel</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

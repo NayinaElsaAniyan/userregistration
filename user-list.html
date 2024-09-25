@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <title>User List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 0px;
+        margin: 0px;
+      }
+      table {
+        width: 80%;
+        border-collapse: collapse;
+        /* /* margin-top: 20px; */
+        margin: 20px auto;
+        margin-left: 200px;
+      }
+      .dataTables_wrapper {
+            width: 60%; /* Set the width of the DataTable wrapper */
+            margin: 0 auto; /* Center the DataTable */
+            margin-top: 30px;
+        }
+      table,
+      th,
+      td {
+        border: 1px solid #ccc;
+      }
+      th,
+      td {
+        padding: 5px;
+        text-align: left;
+      }
+      th {
+        background-color: white;
+        color: #7b1c1c;
+      }
+      button {
+        background-color: #7b1c1c;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #c45959;
+      }
+      /* Modal styling */
+      #editUserModal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        padding: 50px;
+        overflow-y: auto; /* Add this to handle overflow in case of long content */
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        max-width: 600px; /* Increased max-width for better layout */
+        margin: auto;
+      }
+
+      /* Style for each form row */
+      .form-row {
+        display: flex; /* Use Flexbox */
+        justify-content: space-between; /* Space between label and input */
+        align-items: center; /* Center align items vertically */
+        margin-bottom: 10px; /* Space between rows */
+      }
+
+      /* Optional: Style for labels and inputs */
+      .modal-content label {
+        margin-right: 10px; /* Space between label and input */
+        font-weight: bold;
+        flex-basis: 30%; /* Adjust the label width as needed */
+      }
+
+      .modal-content input{
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        flex-basis: 65%; /* Adjust the input width as needed */
+        width: 100%; /* Ensure the input takes full width */
+      }
+
+      button {
+        margin-top: 10px; /* Space between buttons and form */
+      }
+      @media (max-width: 768px) {
+        #userTable th,
+        #userTable td {
+          display: block; /* Make table cells stack */
+          width: 100%; /* Cells take full width */
+        }
+        #userTable {
+          display: block; /* Allow table to stack */
+          overflow-x: auto; /* Allow horizontal scrolling if needed */
+        }
+      }
+      #eyebtn {
+        position: absolute;
+        right: 0px;
+        top: 41%;
+        left: 550px;
+        background:none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        color: rgb(24, 26, 25);
+      }
+      .sidebar {
+        background-color:#7b1c1c;
+        position: fixed;
+        width: 200px;
+        height: 100vh;
+        left: 0px;
+        display: block;
+      }
+      .sidebar a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      .sidebar a:hover {
+        background-color: #d7a7a7;
+      }
+      /* .sidebar.visible {
+        /*forgot to add this for js to work*/
+        /* display: block;
+      } */
+      #sidebtn{
+        top: 0px;
+        background-color: #7b1c1c;
+        color: #f4f4f4 ;
+      }
+      .header {
+        background-color: #7b1c1c;
+        /* color: white; */
+        /* padding: 10px;
+        text-align: center; */
+      }
+      .edit-button {
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      .edit-button i {
+        color: rgb(133, 129, 129); /* yellow color for the edit icon */
+        font-size: large;
+      }
+      .edit-button i:hover{
+        color: rgb(248, 246, 246); /* yellow color for the edit icon */
+        font-size: large;
+      }
+      .delete-button {
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      .delete-button i {
+        color: red; /* red color for the delete icon */
+        font-size: large;
+      }
+      .delete-button i :hover{
+        color: #7b1c1c; /* red color for the delete icon */
+        font-size: large;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div class="navbar"></div>
+      <button id="sidebtn">☰</button>
+      <a href="home.html">Home</a>
+      <a href="home.html">Login</a>
+      <a href="index.html">Register</a>
+      <a href="about.html">About us</a>
+    </div>-->
+    <div class="header" id="header">
+      <button id="sidebtn">☰</button>
+       <!-- <h2>User List</h2> -->
+    </div>
+    <div class="sidebar" id="sidebarid">
+      <a href="#"><i class="fas fa-user-friends"></i> View Users</a><!--id="viewtableUsersLink"-->
+      <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+      <a href="department.html"><i class="fa fa-sitemap"></i> Department</a>
+      <a href="welcome.html"><i class="fa fa-user"></i> Profile</a>
+      <a href="home.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+    <table id="userTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Place</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- User data will be populated here -->
+      </tbody>
+    </table>
+
+  
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal">
+      <div class="modal-content">
+        <div class="form-row">
+          <label for="edit_name">Name:</label>
+          <input type="text" id="edit_name" name="edit_name" />
+        </div>
+        <div class="form-row">
+          <label for="edit_username">Username:</label>
+          <input type="text" id="edit_username" name="edit_username" />
+        </div>
+        <div class="form-row">
+          <label for="edit_email">Email:</label>
+          <input type="email" id="edit_email" name="edit_email" />
+        </div>
+        <div class="form-row">
+          <label for="edit_phone">Phone:</label>
+          <input type="text" id="edit_phone" name="edit_phone" />
+        </div>
+        <div class="form-row">
+          <label for="edit_place">Place:</label>
+          <input type="text" id="edit_place" name="edit_place" />
+        </div>
+        <!-- <div class="form-row">
+          <label for="role">Role</label>
+      <select id="role" name="role">
+        <option value="">Select Role</option>
+        <option value="Software Developer">Software Developer</option>
+        <option value="QA Tester">QA Tester</option>
+        <option value="DevOps Engineer">DevOps Engineer</option>
+        <option value="Technical Support Specialist">Technical Support Specialist</option>
+        <option value="Backend Developer">Backend Developer</option>
+      </select>
+        </div> -->
+        <div class="form-row">
+          <label for="edit_password">Password:</label>
+          <input type="password" id="edit_password" name="edit_password" />
+          <!-- <div class="password-container"> -->
+            <button type="button" id="eyebtn" class="eye-icon" onclick="togglePassword('edit_password')">
+              <i id="eyeIconConfirm" class="fas fa-eye"></i>
+            </button>
+          <!-- </div> -->
+        </div>
+        <div style="text-align: right">
+          <button onclick="updateUser()">Update</button>
+          <button onclick="closeModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

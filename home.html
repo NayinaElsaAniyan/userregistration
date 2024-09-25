@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <title>Login</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            height: 100vh;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            width: 400px;
+            margin: auto;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+        button {
+            background-color: brown;
+            color: white;
+            border: none;
+            height: 30px;
+            width: 100px;
+            border-radius: 20px;
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+        input {
+            height: 30px;
+        }
+        label {
+            font-weight: bold;
+        }
+        /* .sidebar {
+            background-color: rgb(206, 151, 151);
+            position: absolute;
+            top: 0px;
+            margin: 0px;
+            width: 200px;
+            height: 100vh;
+            left: 0px;
+        } */
+        .password-container {
+            display: flex;
+            position: relative;
+            width: 100%;
+        }
+        .password-container input {
+            width: 100%;
+            padding-right: 30px;
+        }
+        .password-container button {
+            position: absolute;
+            right: 0px;
+            left: 330px;
+            top: 20%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .password-container i {
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body style="background-color: rgb(199, 141, 141)">
+    <!-- <div class="sidebar ">
+        <h3>UserList</h3>
+    </div> -->
+    <div class="container">
+        <form id="loginForm">
+            <h1 style="text-align: center;">Login</h1>
+            <label for="username">Username</label>
+            <input type="text" name="username" id="loginusername" placeholder="Enter your username" required>
+            
+            <label for="password">Password</label>
+            <div class="password-container">
+                <input type="password" id="loginpassword" name="password" placeholder="Enter your password" required>
+                <button type="button" class="eye-icon" onclick="togglePassword('loginpassword')">
+                    <i id="eyeIconPassword" class="fas fa-eye"></i>
+                </button>
+            </div>
+
+            <button type="submit">Submit</button>
+            <p style="text-align: center;">Don't have an account? <a href="index.html">Register</a></p>
+        </form>
+        <!-- <div id="welcomeMessage" style="display: none; text-align: center;">
+            <h2>Welcome, <span id="welcomeUsername"></span>!</h2>
+            <p>Glad to have you here.</p>
+        </div> -->
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <title>User Registration1</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0px;
+        /* padding: 20px; */
+      }
+      form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        width: 400px;
+        margin: auto;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      input[type="text"],
+      input[type="password"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="submit"],select {
+        width: 330px;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      input[type="submit"] {
+        background-color: #7b1c1c;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: #c45959;
+      }
+      .error {
+        color: red;
+        margin-bottom: 20px;
+      }
+      /* .sidebar {
+        background-color: rgb(206, 151, 151);
+        position: fixed;
+        top: 0px;
+        margin: 0px;
+        width: 200px;
+        height: 100vh;
+        left: 0px;
+        display: none;
+      }
+      .sidebar a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: white;
+        text-align: center;
+      }
+      .sidebar a:hover {
+        background-color: rgb(219, 135, 135);
+      } */
+      .sidebar {
+        width: 200px;
+        height: 100vh;
+        background-color: white;
+        color: brown;
+        box-sizing: border-box;
+        position: fixed;
+        display: none;
+        transition: left 0.3s ease;
+      }
+      .sidebar a {
+        display: block;
+        color: #7b1c1c;
+        text-decoration: none;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      .sidebar a:hover {
+        background-color: #e78787;
+      }
+      .password-container {
+        display: flex;
+        position: relative;
+        width: 330px;
+      }
+      .password-container input {
+        flex-grow: 1;
+      }
+      .password-container button {
+        position: absolute;
+        right: 10px;
+        top: 40%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+      .password-container i {
+        font-size: 13px;
+        color: #333;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between; /* This will push the button to the left and links to the right */
+        background-color: #7b1c1c;
+        height: 23px; /* Adjusted height for better visibility */
+        padding: 15px;
+      }
+      .navbar a {
+        color: white;
+        margin-left: 15px;
+        text-decoration: none;
+      }
+      #sidebtn {
+        background-color: #7b1c1c;
+        color: white;
+        margin-right: auto;
+        border: none;
+        font-size: 20px;
+      }
+      .sidebar.visible {
+        /*forgot to add this for js to work*/
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <button id="sidebtn"></button>
+      <a href="home.html">Home</a>
+      <a href="home.html">Login</a>
+      <a href="index.html">Register</a>
+      <a href="about.html">About us</a>
+    </div>
+    <!-- <div class="sidebar" id="sidebarid">
+      <a href="user-list.html">View Users</a>
+    </div> -->
+    <h2 style="text-align: center">User Registration</h2>
+    <form id="registerForm" onsubmit="return validateForm()">
+      <div class="error" id="error"></div>
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required />
+
+      <label for="password">Password</label>
+      <div class="password-container">
+        <input type="password" id="password" name="password" required />
+        <button
+          type="button"
+          class="eye-icon"
+          onclick="togglePassword('password')"
+        >
+          <i id="eyeIconConfirm" class="fas fa-eye"></i>
+        </button>
+      </div>
+
+      <label for="confirm_password">Confirm Password</label>
+      <div class="password-container">
+        <input
+          type="password"
+          id="confirm_password"
+          name="confirm_password"
+          required
+        />
+        <button
+          type="button"
+          class="eye-icon"
+          onclick="togglePassword('confirm_password')"
+        >
+          <i id="eyeIconConfirm" class="fas fa-eye"></i>
+        </button>
+      </div>
+
+      <label for="email_id">Email ID</label>
+      <input type="email" id="email_id" name="email_id" required />
+
+      <label for="phone_no">Phone No</label>
+      <input
+        type="tel"
+        id="phone_no"
+        name="phone_no"
+        pattern="[0-9]{10}"
+        required
+      />
+
+      <label for="place">Place</label>
+      <input type="text" id="place" name="place" required />
+
+      <!-- <label for="departmentid">Department ID </label>
+
+      <select id="departmentid" name="departmentid" required>
+        <option value="">Select Department</option>
+        <option value="101">101</option>
+        <option value="102">102</option>
+        <option value="103">103</option>
+        <option value="104">104</option>
+        <option value="105">105</option>
+      </select> -->
+
+      <label for="role">Role</label>
+      <select id="role" name="role" required>
+        <option value="">Select Role</option>
+        <option value="software developer">Software Developer</option>
+        <option value="QA Tester">QA Tester</option>
+        <option value="DevOps Engineer">DevOps Engineer</option>
+        <option value="Technical Support Specialist">Technical Support Specialist</option>
+        <option value="Backend Developer">Backend Developer</option>
+      </select>
+
+      <input type="submit" value="Register" />
+      <!-- <h3><a href="user-list.html">View Users</a></h3> -->
+    </form>
+
+    <script src="script.js"></script>
+  </body>
+</html>
